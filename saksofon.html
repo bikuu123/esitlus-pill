@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saksofon - Esitlus</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: #1a1a2e;
+            color: #e0e0e0;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .slide {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 60px 80px;
+            position: relative;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: #f0c040;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            color: #f0c040;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #b0b0b0;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .content {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .content p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin-bottom: 16px;
+            color: #d0d0d0;
+        }
+
+        .content ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .content ul li {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            padding: 8px 0 8px 30px;
+            position: relative;
+            color: #d0d0d0;
+        }
+
+        .content ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 16px;
+            width: 12px;
+            height: 12px;
+            background: #f0c040;
+            border-radius: 50%;
+        }
+
+        .highlight {
+            color: #f0c040;
+            font-weight: 600;
+        }
+
+        /* Title slide */
+        .title-slide {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        }
+
+        .title-slide h1 {
+            font-size: 5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 40px rgba(240, 192, 64, 0.3);
+        }
+
+        .sax-icon {
+            font-size: 6rem;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 20px rgba(240, 192, 64, 0.4));
+        }
+
+        /* Card grid */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(240, 192, 64, 0.2);
+            border-radius: 12px;
+            padding: 28px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(240, 192, 64, 0.15);
+        }
+
+        .card h3 {
+            font-family: 'Playfair Display', serif;
+            color: #f0c040;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #b0b0b0;
+        }
+
+        /* Timeline */
+        .timeline {
+            max-width: 800px;
+            width: 100%;
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #f0c040, #e07020);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 28px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -36px;
+            top: 6px;
+            width: 16px;
+            height: 16px;
+            background: #f0c040;
+            border-radius: 50%;
+            border: 3px solid #1a1a2e;
+        }
+
+        .timeline-item .year {
+            font-weight: 700;
+            color: #f0c040;
+            font-size: 1.1rem;
+        }
+
+        .timeline-item .desc {
+            color: #c0c0c0;
+            font-size: 1.05rem;
+            line-height: 1.5;
+        }
+
+        /* Types grid */
+        .types-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .type-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(240, 192, 64, 0.15);
+            border-radius: 12px;
+            padding: 24px 16px;
+            text-align: center;
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        .type-card:hover {
+            transform: scale(1.05);
+            background: rgba(240, 192, 64, 0.08);
+        }
+
+        .type-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+
+        .type-card h3 {
+            font-family: 'Playfair Display', serif;
+            color: #f0c040;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .type-card p {
+            font-size: 0.9rem;
+            color: #a0a0a0;
+            line-height: 1.5;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 100;
+        }
+
+        .nav button {
+            background: rgba(240, 192, 64, 0.15);
+            border: 1px solid rgba(240, 192, 64, 0.3);
+            color: #f0c040;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .nav button:hover {
+            background: rgba(240, 192, 64, 0.3);
+        }
+
+        .nav button:disabled {
+            opacity: 0.3;
+            cursor: default;
+        }
+
+        .slide-counter {
+            color: #888;
+            font-size: 0.95rem;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #f0c040, #e07020);
+            transition: width 0.4s ease;
+            z-index: 100;
+        }
+
+        /* Decorative background notes */
+        .bg-note {
+            position: absolute;
+            font-size: 1.5rem;
+            opacity: 0.04;
+            color: #f0c040;
+            pointer-events: none;
+        }
+
+        /* Quote */
+        .quote {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-style: italic;
+            color: #d0c090;
+            text-align: center;
+            max-width: 700px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .quote-author {
+            font-size: 1.1rem;
+            color: #888;
+        }
+
+        /* Famous players */
+        .players-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .player-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(240, 192, 64, 0.15);
+            border-radius: 12px;
+            padding: 28px 20px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .player-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .player-card .avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f0c040, #e07020);
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #1a1a2e;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .player-card h3 {
+            color: #f0c040;
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+        }
+
+        .player-card .genre {
+            color: #888;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+
+        .player-card p {
+            color: #b0b0b0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* End slide */
+        .end-slide h1 {
+            font-size: 3.5rem;
+        }
+
+        .end-info {
+            font-size: 1.1rem;
+            color: #888;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Slaid 1: Tiitelleht -->
+<div class="slide title-slide active" id="slide-1">
+    <div class="sax-icon">&#127927;</div>
+    <h1>Saksofon</h1>
+    <p class="subtitle">Pill, mis uhab hinge</p>
+</div>
+
+<!-- Slaid 2: Mis on saksofon? -->
+<div class="slide" id="slide-2">
+    <h2>Mis on saksofon?</h2>
+    <div class="content">
+        <p>Saksofon on <span class="highlight">puupuhkpill</span>, mis on valmistatud metallist (tavaliselt messingist), kuid klassifitseeritakse puupuhkpillide hulka, sest heli tekitatakse <span class="highlight">pillirookeeliga</span>.</p>
+        <p>Saksofon on unikaalne pill, mis uhendab endas puhkpilli soojuse ja vaskpilli voimsuse. See on uurke pill, mis koolab hasti peaaegu iga muusikastiili ja ansambliga.</p>
+    </div>
+</div>
+
+<!-- Slaid 3: Ajalugu -->
+<div class="slide" id="slide-3">
+    <h2>Saksofoni ajalugu</h2>
+    <div class="timeline">
+        <div class="timeline-item">
+            <span class="year">1840ndad</span>
+            <p class="desc">Belgia pilliehitaja <span class="highlight">Adolphe Sax</span> leiutab saksofoni Pariisis, soovides luua pilli, mis uhendaks puu- ja vaskpuhkpillide parimad omadused.</p>
+        </div>
+        <div class="timeline-item">
+            <span class="year">1846</span>
+            <p class="desc">Adolphe Sax saab saksofonile patendi. Esialgu kavandati 14 erineva suurusega saksofoni.</p>
+        </div>
+        <div class="timeline-item">
+            <span class="year">19. sajandi lopp</span>
+            <p class="desc">Saksofon leiab kasutust sojavaeorkestrites ja klassikalises muusikas.</p>
+        </div>
+        <div class="timeline-item">
+            <span class="year">1920ndad</span>
+            <p class="desc">Saksofon saab <span class="highlight">jazzimuusika</span> suumbooliks ja tungib populaarmuusikasse.</p>
+        </div>
+        <div class="timeline-item">
+            <span class="year">Tanapaev</span>
+            <p class="desc">Saksofoni kasutatakse jazzis, rokis, popmuusikas, klassikalises muusikas ja paljudes teistes zanrides.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slaid 4: Saksofoni tuubid -->
+<div class="slide" id="slide-4">
+    <h2>Saksofoni tuubid</h2>
+    <div class="types-grid">
+        <div class="type-card">
+            <div class="icon">&#9650;</div>
+            <h3>Sopran</h3>
+            <p>Koige kohkem haal. Sirge voi kaarjas kuju. Tuntud jazzi- soolomangust.</p>
+        </div>
+        <div class="type-card">
+            <div class="icon">&#9670;</div>
+            <h3>Alt</h3>
+            <p>Koige populaarsem algajate seas. Keskmine suurus ja helikorgus. Eb haalestatuses.</p>
+        </div>
+        <div class="type-card">
+            <div class="icon">&#9724;</div>
+            <h3>Tenor</h3>
+            <p>Soojema ja tummisema kola-ga. Eriti populaarne jazzis ja rock'n'roll'is.</p>
+        </div>
+        <div class="type-card">
+            <div class="icon">&#9679;</div>
+            <h3>Bariton</h3>
+            <p>Suurim ja madalaima haalega. Annab ansamblile suga-vust ja baasi.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slaid 5: Ehitus ja osad -->
+<div class="slide" id="slide-5">
+    <h2>Saksofoni ehitus</h2>
+    <div class="card-grid">
+        <div class="card">
+            <h3>Huulik</h3>
+            <p>Saksofoni ulaosa, kuhu pannakse pillirookeeleke. Huulik mojutab oluliselt pilli kola.</p>
+        </div>
+        <div class="card">
+            <h3>Keeleke (leht)</h3>
+            <p>Pillirookeelik, mis vibreerudes tekitab heli. Valmistatud tavaliselt loomulikust pilliroost.</p>
+        </div>
+        <div class="card">
+            <h3>Korpus</h3>
+            <p>Koonusjas metalltoru, mis on kaetud klapimehanismiga. Valmistatud messingist.</p>
+        </div>
+        <div class="card">
+            <h3>Klapid</h3>
+            <p>Metallist klapid, mida sormega vajutades muudetakse heli korgust. Kasutab Boehmi susteemi.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slaid 6: Tsitaat -->
+<div class="slide" id="slide-6">
+    <p class="quote">"Saksofon on koige inimhaalele lahedasem pill. See suudab nutta, naerda ja laulda nagu ukski teine instrument."</p>
+    <p class="quote-author">- Tuntud muusikute uhine arvamus</p>
+</div>
+
+<!-- Slaid 7: Kuulsad saksofonistid -->
+<div class="slide" id="slide-7">
+    <h2>Kuulsad saksofonistid</h2>
+    <div class="players-grid">
+        <div class="player-card">
+            <div class="avatar">CP</div>
+            <h3>Charlie Parker</h3>
+            <p class="genre">Jazz / Bebop</p>
+            <p>Bebop-jazzi rajaja, keda peetakse uheks koigi aegade parimaks saksofonistiks.</p>
+        </div>
+        <div class="player-card">
+            <div class="avatar">JC</div>
+            <h3>John Coltrane</h3>
+            <p class="genre">Jazz / Avangard</p>
+            <p>Revolutsiooniline jazzimuusik, kes viis saksofonimangu taiesti uuele tasemele.</p>
+        </div>
+        <div class="player-card">
+            <div class="avatar">KG</div>
+            <h3>Kenny G</h3>
+            <p class="genre">Smooth Jazz / Pop</p>
+            <p>Uks enim muunud instrumentalistidest maailmas. Tuntud oma meloodilise stiili poolest.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slaid 8: Saksofon muusikas -->
+<div class="slide" id="slide-8">
+    <h2>Saksofon eri muusikastiilides</h2>
+    <div class="card-grid">
+        <div class="card">
+            <h3>Jazz</h3>
+            <p>Saksofoni koduzhaner. Improvisatsioon ja hingeline valjenduslikkus on votmes.</p>
+        </div>
+        <div class="card">
+            <h3>Klassikaline muusika</h3>
+            <p>Maurice Ravel, Claude Debussy ja paljud teised heliloojad on kirjutanud saksofonile teoseid.</p>
+        </div>
+        <div class="card">
+            <h3>Rock ja pop</h3>
+            <p>Ikoonilised saksofonisoolod lugudes nagu "Careless Whisper" ja "Baker Street".</p>
+        </div>
+        <div class="card">
+            <h3>Funk ja soul</h3>
+            <p>Saksofon lisab tantsulisust ja energiat funk- ja soul-muusikale.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slaid 9: Huvitavad faktid -->
+<div class="slide" id="slide-9">
+    <h2>Huvitavad faktid</h2>
+    <div class="content">
+        <ul>
+            <li>Saksofon on ainus laialdaselt kasutatav pill, mille leiutas <span class="highlight">uks konkreetne inimene</span> - Adolphe Sax.</li>
+            <li>Saksofonil on umbes <span class="highlight">300 erinevat osa</span>.</li>
+            <li>Lisa Simpson (animasarjast "Simpsonid") mangib <span class="highlight">baritonsaksofoni</span>.</li>
+            <li>Maailma suurim saksofon on <span class="highlight">uhe 2 meetrit</span> pikk subkontrabass-saksofon.</li>
+            <li>Bill Clinton, USA endine president, on tuntud <span class="highlight">tenorsaksofoni</span> mangija.</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Slaid 10: Lopp -->
+<div class="slide end-slide" id="slide-10">
+    <div class="sax-icon">&#127927;</div>
+    <h1>Aitah!</h1>
+    <p class="subtitle">Kas on kusimusi?</p>
+</div>
+
+<!-- Navigatsioon -->
+<div class="nav">
+    <button id="prevBtn" onclick="changeSlide(-1)" disabled>&#8592; Eelmine</button>
+    <span class="slide-counter" id="slideCounter">1 / 10</span>
+    <button id="nextBtn" onclick="changeSlide(1)">Jargmine &#8594;</button>
+</div>
+
+<script>
+    let currentSlide = 1;
+    const totalSlides = 10;
+
+    function changeSlide(direction) {
+        const current = document.getElementById('slide-' + currentSlide);
+        currentSlide += direction;
+
+        if (currentSlide < 1) currentSlide = 1;
+        if (currentSlide > totalSlides) currentSlide = totalSlides;
+
+        document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+
+        const next = document.getElementById('slide-' + currentSlide);
+        next.classList.add('active');
+
+        document.getElementById('slideCounter').textContent = currentSlide + ' / ' + totalSlides;
+        document.getElementById('prevBtn').disabled = currentSlide === 1;
+        document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+
+        // Update progress bar
+        const progress = ((currentSlide - 1) / (totalSlides - 1)) * 100;
+        document.getElementById('progressBar').style.width = progress + '%';
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowRight' || e.key === ' ') {
+            e.preventDefault();
+            if (currentSlide < totalSlides) changeSlide(1);
+        } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            if (currentSlide > 1) changeSlide(-1);
+        }
+    });
+</script>
+
+</body>
+</html>
